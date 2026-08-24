@@ -27,10 +27,11 @@ Check the current state of the installation before touching anything:
 ```bash
 wp core version
 wp core verify-checksums
-wp db export backup-before-upgrade.sql
 ```
 
 `verify-checksums` confirms the core files match the official release, so modified or infected files surface before the upgrade instead of being blamed on it afterwards.
+
+Take a full backup before going any further. The [Reliability](https://make.wordpress.org/hosting/handbook/reliability/) page links to the backup documentation, including [backing up your database](https://developer.wordpress.org/advanced-administration/security/backup/database/) and [backing up your WordPress files](https://developer.wordpress.org/advanced-administration/security/backup/files/).
 
 **Upgrading to a specific version**
 
