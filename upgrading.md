@@ -44,11 +44,13 @@ Take a full backup before going any further. The [Reliability](https://make.word
 The upgrade paths on this page move through intermediate versions rather than jumping straight to the latest release. WP-CLI can pin each hop:
 
 ```bash
-wp core update --version=4.9.31
+wp core update --version=4.9.33
 wp core update-db
 ```
 
 Run the pair once per hop, following the target versions listed in the sections below, and check the site between hops. For CLI-based upgrades, run `update-db` after each core update so database schema changes are applied before continuing to the next hop.
+
+The sections below name a branch, such as 4.9. For each hop, use the newest release of that branch from the [WordPress releases page](https://wordpress.org/download/releases/), which may be newer than the one in this example.
 
 [tip]On multisite, run `wp core update-db --network` so the database upgrade runs across all sites.[/tip]
 
@@ -59,10 +61,22 @@ After the final hop, run `wp core verify-checksums` again to confirm the files m
 If an update gets stuck or fails partway, force WP-CLI to re-run the same versioned core file update:
 
 ```bash
-wp core update --version=4.9.31 --force
+wp core update --version=4.9.33 --force
 ```
 
 Use the same `--version` value as the hop you were trying to complete.
+
+If the command stops with "Another update is currently in progress.", an earlier run left its lock behind. The lock expires on its own after 15 minutes, or you can remove it:
+
+```bash
+wp option delete core_updater.lock
+```
+
+If the site keeps showing "Briefly unavailable for scheduled maintenance. Check back in a minute.", an interrupted update left a `.maintenance` file in the WordPress root directory. WordPress ignores the file once it is 10 minutes old. To clear the message right away, delete the file or run:
+
+```bash
+wp maintenance-mode deactivate
+```
 
 To re-download the core files without replacing the `wp-content` directory, for example when `verify-checksums` keeps reporting modified files:
 
