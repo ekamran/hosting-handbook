@@ -150,7 +150,7 @@ The Redis server in its default configuration listens on port 6379. The port can
 
 ##### Redis Unix sockets
 
-Instead of a TCP port, Redis can listen on a Unix domain socket, which is not reachable over the network at all. Setting `unixsocket` to a socket path and `port 0` in the Redis configuration disables Redis's regular TCP listener, and `unixsocketperm 700` restricts the socket to its owning system user, so access is controlled by file permissions rather than network rules or credentials. The object caching plugin has to support socket connections for this to work. The Redis Object Cache plugin, for example, connects through a socket when `WP_REDIS_SCHEME` is set to `unix` and `WP_REDIS_PATH` points at the socket file.
+Instead of a TCP port, Redis can listen on a Unix domain socket, which is not reachable over the network at all. Setting `unixsocket` to a socket path and `port 0` in the Redis configuration disables Redis's regular TCP listener, so socket access is controlled by filesystem permissions rather than network rules. `unixsocketperm 700` restricts the socket to its owning system user, which fits a per-user instance where Redis and PHP run as the same user. If Redis runs as a separate service user, use `unixsocketperm 770` and add the PHP user to the Redis group instead. The object caching plugin has to support socket connections for this to work. The Redis Object Cache plugin, for example, connects through a socket when `WP_REDIS_SCHEME` is set to `unix` and `WP_REDIS_PATH` points at the socket file.
 
 ##### Per-user Redis instances
 
